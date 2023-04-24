@@ -6,50 +6,59 @@ namespace Problem
 {
     public class ValidatePassword
     {
-        public bool isValid(string password)
+        public static Action<dynamic> print = txt => Console.WriteLine(txt);
+
+        public static bool isValid(string password)
         {
             if (string.IsNullOrEmpty(password))
             {
+                print("Invalid password: Password cannot be empty");
                 return false;
             }
 
-            // Check length
+
             if (password.Length < 6 || password.Length > 24)
             {
+                print("Invalid password: Password must be between 6 and 24 characters");
                 return false;
             }
 
-            // Check uppercase letter
+
             if (!password.Any(char.IsUpper))
             {
+                print("Invalid password: Password must contain at least one uppercase letter");
                 return false;
             }
 
-            // Check lowercase letter
+
             if (!password.Any(char.IsLower))
             {
+                print("Invalid password: Password must contain at least one lowercase letter");
                 return false;
             }
 
-            // Check digit
+
             if (!password.Any(char.IsDigit))
             {
+                print("Invalid password: Password must contain at least one digit");
                 return false;
             }
 
-            // Check repeated characters
+
             if (Regex.IsMatch(password, @"(\w)\1{2,}"))
             {
+                print("Invalid password: Password cannot contain more than two of the same character in a row");
                 return false;
             }
 
-            // Check special characters
+
             string specialCharacters = "!@#$%^&*()+=_-{}[]:;\"'<>?,.";
             if (!password.Any(c => specialCharacters.Contains(c)))
             {
+                print("Invalid password: Password must contain at least one special character");
                 return false;
             }
-            // All checks passed
+
             return true;
         }
     }

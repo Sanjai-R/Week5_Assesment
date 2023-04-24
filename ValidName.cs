@@ -2,50 +2,61 @@ namespace Problem
 {
     public class ValidName
     {
+        public static Action<dynamic> print = txt => Console.WriteLine(txt);
         public static bool isValid(string name)
         {
-            // Split the name into terms by space
             string[] terms = name.Split();
 
-            // Check if the name has 2 or 3 terms
             if (terms.Length < 2 || terms.Length > 3)
             {
+                print("Invalid name: Must have 2 or 3 terms");
                 return false;
             }
+            foreach (var i in terms)
+            {
+                print(i.Length);
 
-            // Iterate through the terms and validate each term
+            }
+
             foreach (string term in terms)
             {
-                if (term.Length == 1)
+                if (term.Length == 1 && !term.EndsWith('.'))
                 {
-                    // If term is an initial, it must end with a dot
-                    if (!term.EndsWith('.'))
-                    {
-                        return false;
-                    }
+
+                    print("Invalid name: Initial must end with a dot");
+                    return false;
                 }
-                else if (term.Length >= 2)
+                else if (term.Length >= 2 && term.Contains('.') && char.IsLower(term[0]))
                 {
-                    // If term is a word, it must not contain dots
-                    if (term.Contains('.'))
-                    {
-                        return false;
-                    }
+
+                    print("Invalid name: Incorrect capitalization");
+                    return false;
                 }
-                else
+                else if (term.Length > 2 && term.Contains('.'))
                 {
-                    // Invalid term length
+
+
+                    print("Invalid name: Word cannot contain dots");
+                    return false;
+                }
+                else if (term.Length <= 1)
+                {
+
+                    print("Invalid name: Term must have 2 or more characters");
+                    return false;
+                }
+                else if ((terms[0] == term || terms[1] == term) && term.EndsWith("."))
+                {
+                    print("Invalid name: cannot keep the first name as an initial");
                     return false;
                 }
             }
-
-            // Check the last term, which should be a word
             if (terms[terms.Length - 1].Length <= 1)
             {
+                print("Invalid name: Last term must be a word");
                 return false;
             }
 
-            // All validation checks passed, the name is valid
             return true;
         }
     }
